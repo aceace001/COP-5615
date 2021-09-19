@@ -91,26 +91,41 @@ let splitwork a =
                         loop())
 
 
-let master = spawn system "master" <| fun mailbox ->
-    let rec loop() = actor {
-        let! msg = mailbox.Receive()
-        let mutable numactor = 0
-
-        match msg with
-        |Assignjob(a)-> let re = splitwork a
-                        for r in re do
-                            Async.RunSynchronously(r,-1) |> ignore
-                        mailbox.Sender() <! "Done"
-
-        return! loop()
-    }
-    loop()
-
+//let master = spawn system "master" <| fun mailbox ->
+//    let rec loop() = actor {
+//        let! msg = mailbox.Receive()
+//        let mutable numactor = 0
+//
+//        match msg with
+//        |Assignjob(a)-> let re = splitwork a
+//                        for r in re do
+//                            Async.RunSynchronously(r,-1) |> ignore
+//                        mailbox.Sender() <! "Done"
+//
+//        return! loop()
+//    }
+//    loop()
 
 let input:int = int fsi.CommandLineArgs.[0]
-let boss = (master <? Assignjob(input))
 
+// input number of leading 0's
+//let k:int = int fsi.CommandLineArgs.[1]
+let k = int(fsi.CommandLineArgs |> Seq.item 2)
+//let boss = (master <? Assignjob(input))
+
+type master(name) =
+    inherit Actor()
+    
+    override x.OnReceive message =
+        match message with
+        | :? string as msg -> sha256Hash msg k 
+        | _-> failwith "unknown message"
+        
+let master =
+    [1..1024]
+    |> List.map(fun id -> let property = [| string(id) :> obj|]
+                          system.ActorOf(Props(typedefof<master>, property)))
+        
 Async.RunSynchronously(boss,-1) |> ignore
-
 
 

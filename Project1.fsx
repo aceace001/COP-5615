@@ -69,7 +69,7 @@ let rec leadzeros (h:string) =
 
 let compute inpu = 
 
-    let workunit:int = 10000
+    let workunit:int = 3
     let start:char = ' '
     let startstring:string = string start
     let mutable workends:string = startstring

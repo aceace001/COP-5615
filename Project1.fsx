@@ -25,23 +25,41 @@ let sha256Hash (input : string) =
     |> Seq.map (fun c -> c.ToString("x2"))
     |> Seq.reduce (+)
 
-
-let ascii (s : string) = 
+let rec ascii (s : string) = 
     
     let start:char = ' '
     let ends:char = '~'
     
     let startstring:string = string start
     let endstring:string = string ends
+    let isCorrect = String.forall (fun c -> c = ends)
 
     let ss:char = s.[s.Length - 1]
    
     if (ss = ends) then
-        s + startstring
-
+        ascii(s.[0..s.Length-2]) + startstring
     else
         let sss:int = int ss + 1
         s.[0..(s.Length - 2)] + string (Convert.ToChar(sss))
+
+
+let ascii_1 (s : string) = 
+    
+    let start:char = ' '
+    let ends:char = '~'
+    
+    let startstring:string = string start
+
+    let isCorrect = String.forall (fun c -> c = ends)
+
+    let ss:char = s.[s.Length - 1]
+   
+    if (isCorrect(s)) then
+        String.replicate (s.Length + 1) startstring
+    else 
+        ascii(s)
+
+///let aaa = ascii_1("a~~")
 
 let rec leadzeros (h:string) = 
     if h.[0] <> '0' then
@@ -66,7 +84,7 @@ let compute inpu =
         if (count = inpu) then
             printfn "%s %s" bitcoin hash
 
-        workends <- ascii(workends)
+        workends <- ascii_1(workends)
 
 compute 4
 
@@ -111,6 +129,4 @@ let input:int = int fsi.CommandLineArgs.[0]
 let boss = (master <? Assignjob(input))
 
 Async.RunSynchronously(boss,-1) |> ignore
-
-
 

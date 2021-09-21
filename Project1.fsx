@@ -117,7 +117,6 @@ let master (mailbox:Actor<_>) =
 
         match msg with
         |Assignjob(a)-> 
-            let workuni = 3
             let input  = a
             let numactor = 8
 

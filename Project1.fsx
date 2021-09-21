@@ -67,10 +67,10 @@ let ascii_1 (s : string) =
     else 
         ascii(s)
 
-// test ASCII_1 function 
-//let randomEncoded = ascii_1("a")
-//printfn("test ascii_1: %s\n") randomEncoded
-
+//// test ASCII_1 function 
+////let randomEncoded = ascii_1("a")
+////printfn("test ascii_1: %s\n") randomEncoded
+//
 let rec leadzeros (h:string) = 
     if h.[0] <> '0' then
         0
@@ -84,8 +84,8 @@ let rec leadzeros (h:string) =
 //let res = leadzeros(k)
 //printfn ("test leading zeros: %A\n") res
 
-let compute inpu = 
-    let workunit:int = 10
+let compute (workunit:int)(inpu:int) =
+//    let workunit:int = 4
     let start:char = ' '
     let startstring:string = string start
     let mutable workends:string = startstring
@@ -102,15 +102,16 @@ let compute inpu =
         workends <- ascii_1(workends)
 
 
-//compute k
-
+//compute 1
+let test (num:int) (sum:int) =
+    printfn("%A, %A") (num * 2) (sum)
 // using actor below
 type master(name) =
     inherit Actor()
     
     override x.OnReceive message =
         match message with
-        | :? int as k -> compute k
+        | :? int as msg -> compute msg k 
         | _-> failwith "unknown message"
  
    

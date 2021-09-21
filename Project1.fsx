@@ -73,18 +73,24 @@ let compute inpu =
     let start:char = ' '
     let startstring:string = string start
     let mutable workends:string = startstring
+    let mutable lists : string list = []
     
 
     while (workends.Length <= workunit) do
         let bitcoin:string = "yuhaoshi" + workends
-        let hash = sha256Hash(bitcoin)
-        let count = leadzeros(hash) 
-        ///Seq.length(Seq.filter (fun x' -> x' = '0') hash.[0..workunit])
-
-        if (count = inpu) then
-            printfn "%s %s" bitcoin hash
-
+        lists <- bitcoin :: lists
+        
         workends <- ascii_1(workends)
+        
+    let names = lists |> List.toArray
+    ///let rand = new System.Random()
+    ///let nl = names.[rand.Next(names.Length)]
+
+    for items in names.[0 .. 10000] do 
+        let hash = sha256Hash(items)
+        let count = leadzeros(hash) 
+        if (int64(count) = input) then
+            printfn "%s %s" nl hash
 
 compute 4
 

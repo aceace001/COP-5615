@@ -15,7 +15,7 @@ let system = ActorSystem.Create("FSharp")
 
 // input number of leading 0's we need 
 let k:int = int (fsi.CommandLineArgs |> Seq.item 1)
-let num_actor = 3
+let num_actor = 10000
 let rand = Random(1234)
 type WorkerMsg = 
     | Work of int
@@ -103,9 +103,9 @@ let rec leadzeros (h:string) =
 
 // updated compute
 
-let compute (workunit:int) (inpu:int) = 
+let compute (numActor:int) (inpu:int) = 
 
-//    let workunit:int = 4
+    let workunit:int = 95 * 95 * 95 / numActor
     let start:char = ' '
     let startstring:string = string start
     let mutable workends:string = startstring

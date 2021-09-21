@@ -15,7 +15,7 @@ let system = ActorSystem.Create("FSharp")
 
 // input number of leading 0's we need 
 let k:int = int (fsi.CommandLineArgs |> Seq.item 1)
-let num_actor = 1024
+let num_actor = 3
 let rand = Random(1234)
 type WorkerMsg = 
     | Work of int
@@ -84,27 +84,52 @@ let rec leadzeros (h:string) =
 //let res = leadzeros(k)
 //printfn ("test leading zeros: %A\n") res
 
-let compute (workunit:int)(inpu:int) =
+//let compute (workunit:int)(inpu:int) =
+////    let workunit:int = 4
+//    let start:char = ' '
+//    let startstring:string = string start
+//    let mutable workends:string = startstring
+//
+//    while (workends.Length <= workunit) do
+//        let bitcoin:string = "yuhaoshi" + workends
+//        let hash = sha256Hash(bitcoin)
+//        let count = leadzeros(hash) 
+//        ///Seq.length(Seq.filter (fun x' -> x' = '0') hash.[0..workunit])
+////        printfn ("%s\n") workends 
+//        if (count = inpu) then
+//            printfn "%s %s" bitcoin hash
+//
+//        workends <- ascii_1(workends)
+
+// updated compute
+
+let compute (workunit:int) (inpu:int) = 
+
 //    let workunit:int = 4
     let start:char = ' '
     let startstring:string = string start
     let mutable workends:string = startstring
+    let mutable lists : string list = []
+    
 
     while (workends.Length <= workunit) do
         let bitcoin:string = "yuhaoshi" + workends
-        let hash = sha256Hash(bitcoin)
-        let count = leadzeros(hash) 
-        ///Seq.length(Seq.filter (fun x' -> x' = '0') hash.[0..workunit])
-//        printfn ("%s\n") workends 
-        if (count = inpu) then
-            printfn "%s %s" bitcoin hash
-
+        lists <- bitcoin :: lists
+        
         workends <- ascii_1(workends)
-
+        
+    let names = lists |> List.toArray
+    ///let rand = new System.Random()
+    ///let nl = names.[rand.Next(names.Length)]
+    for items in names.[0 .. 10000] do 
+        let hash = sha256Hash(items)
+        let count = leadzeros(hash) 
+        if count = inpu then
+            printfn "%s %s" items hash
 
 //compute 1
-let test (num:int) (sum:int) =
-    printfn("%A, %A") (num * 2) (sum)
+//let test (num:int) (sum:int) =
+//    printfn("%A, %A") (num * 2) (sum)
 // using actor below
 type master(name) =
     inherit Actor()

@@ -89,8 +89,8 @@ let compute inpu =
     for items in names.[0 .. 10000] do 
         let hash = sha256Hash(items)
         let count = leadzeros(hash) 
-        if (int64(count) = input) then
-            printfn "%s %s" nl hash
+        if count = input then
+            printfn "%s %s" items hash
 
 compute 4
 

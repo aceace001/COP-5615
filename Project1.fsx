@@ -15,7 +15,7 @@ let system = ActorSystem.Create("FSharp")
 
 // input number of leading 0's we need 
 let k:int = int (fsi.CommandLineArgs |> Seq.item 1)
-let num_actor = 10000
+let num_actor = 1
 let rand = Random(1234)
 type WorkerMsg = 
     | Work of int
@@ -84,28 +84,12 @@ let rec leadzeros (h:string) =
 //let res = leadzeros(k)
 //printfn ("test leading zeros: %A\n") res
 
-//let compute (workunit:int)(inpu:int) =
-////    let workunit:int = 4
-//    let start:char = ' '
-//    let startstring:string = string start
-//    let mutable workends:string = startstring
-//
-//    while (workends.Length <= workunit) do
-//        let bitcoin:string = "yuhaoshi" + workends
-//        let hash = sha256Hash(bitcoin)
-//        let count = leadzeros(hash) 
-//        ///Seq.length(Seq.filter (fun x' -> x' = '0') hash.[0..workunit])
-////        printfn ("%s\n") workends 
-//        if (count = inpu) then
-//            printfn "%s %s" bitcoin hash
-//
-//        workends <- ascii_1(workends)
-
 // updated compute
 
 let compute (numActor:int) (inpu:int) = 
-
-    let workunit:int = 95 * 95 * 95 / numActor
+    printfn("in compute")
+    printfn("numActor: %A") numActor 
+    let workunit:int = 95 * 95 *95 / numActor
     let start:char = ' '
     let startstring:string = string start
     let mutable workends:string = startstring
@@ -126,17 +110,59 @@ let compute (numActor:int) (inpu:int) =
         let count = leadzeros(hash) 
         if count = inpu then
             printfn "%s %s" items hash
+            
+// new
+let compute11 (num_actor: int)(inpu:int) =
+    printfn("compute11")
+    printfn ("~~~~inpu~~~~: %A~~~~~") inpu
+    printfn("******num_actor*****: %A******\n") num_actor 
+//    let workunit:int = 95 * 95 *95 / num_actor
+    let substr = 3
+    let start:char = ' '
+    let startstring:string = string start
+    let mutable workends:string = startstring
+    let mutable lists : string list = []
+    
+    
+    while (workends.Length <= substr) do
+        let bitcoin:string = "yuhaoshi" + workends
+        lists <- bitcoin :: lists      
+        workends <- ascii_1(workends)
+//        printfn("end while")
+//    printfn("lists: %A") lists
+//    printfn("num of lists: %A") lists.Length
+//    printfn("item: %A")(lists.Item(1))
+//    lists <- lists.[(num_actor - 1) * workunit..num_actor * workunit]
+//    printfn("updated lists: %A") lists
+    printfn("out of loop")   
+    let names = lists |> List.toArray
+    printfn("names.length: %A") names.Length
+    ///let rand = new System.Random()
+    ///let nl = names.[rand.Next(names.Length)]
+    let workunit:int = 95 * 95 *95 / num_actor
+    for items in names.[(num_actor - 1) * workunit .. num_actor * workunit] do 
+        let hash = sha256Hash(items)
+        let count = leadzeros(hash) 
+        if count = inpu then
+            printfn "%s %s" items hash
+    printfn ("over!")
 
+//compute11(1)(3)
+// new
+
+   
 //compute 1
 //let test (num:int) (sum:int) =
 //    printfn("%A, %A") (num * 2) (sum)
+//    
 // using actor below
 type master(name) =
     inherit Actor()
     
     override x.OnReceive message =
         match message with
-        | :? int as msg -> compute msg k 
+        | :? int as msg -> compute11 msg k
+//        | :? int as msg -> test msg 6
         | _-> failwith "unknown message"
  
    

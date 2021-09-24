@@ -4,9 +4,7 @@
 
 open System
 open Akka.Actor
-open Akka.Configuration
 open Akka.FSharp
-open Akka.TestKit
 open System.Security.Cryptography
 open System.Text
 
@@ -101,7 +99,7 @@ let worker (mailbox:Actor<_>) =
     }
     loop ()
 
-let worker1 = spawn system "Worker1" worker
+(*let worker1 = spawn system "Worker1" worker
 let worker2 = spawn system "Worker2" worker
 let worker3 = spawn system "Worker3" worker
 let worker4 = spawn system "Worker4" worker
@@ -109,8 +107,11 @@ let worker5 = spawn system "Worker5" worker
 let worker6 = spawn system "Worker6" worker
 let worker7 = spawn system "Worker7" worker
 let worker8 = spawn system "Worker8" worker
+*)
 
-let master (mailbox:Actor<_>) =
+let master =
+    spawn system "master"
+    <| fun mailbox ->
     let rec loop() = actor {
         let! msg = mailbox.Receive()
         let mutable nWorkLeft = 0
@@ -124,7 +125,16 @@ let master (mailbox:Actor<_>) =
 
             let workeach = worktotal / numactor
 
-            let start1: int = 1
+            let creatework = 
+                [for a in 1..numactor do yield (spawn system ("actor" + string(a))) worker]
+                
+
+            for id in 0..(numactor-1) do
+                let starts = max 1 (id * workeach - 1)
+                let ends = min worktotal (id * workeach + workeach)
+                creatework.Item(id) <! Work (starts, ends, a)
+
+            (*let start1: int = 1
             let start2: int = start1 + workeach
             let start3: int = start2 + workeach
             let start4: int = start3 + workeach
@@ -140,7 +150,7 @@ let master (mailbox:Actor<_>) =
             worker5 <! Work (start5,start6-1,a)
             worker6 <! Work (start6,start7-1,a)
             worker7 <! Work (start7,start8-1, a)
-            worker8 <! Work (start8,worktotal,a)
+            worker8 <! Work (start8,worktotal,a)*)
             
             mailbox.Sender() <! "Done"
 
@@ -158,7 +168,20 @@ let master (mailbox:Actor<_>) =
 
 
 let input = int (fsi.CommandLineArgs |> Seq.item 1)
-let masteref = spawn system "master" master
-masteref <! Assignjob(input)
+//let masteref = spawn system "master" master
+
+//let task:Async<obj> = (masteref <? Assignjob(input))
+//Async.RunSynchronously (task, -1) 
+
+for timeout in [10000] do
+    try
+        let task = (master <? Assignjob(input))
+
+        let response = Async.RunSynchronously (task, timeout)
+        let responseLength = string(response) |> String.length
+
+        printfn "response: result has %d bytes" responseLength
+    with :? TimeoutException ->
+        printfn "ask: timeout!"
 
 system.Terminate()

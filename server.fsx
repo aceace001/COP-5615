@@ -1,14 +1,12 @@
-#time "on"
 #r "nuget: Akka.FSharp" 
 #r "nuget: Akka.Remote"
-#r "nuget: Akka.TestKit"
-
 open System
 open Akka.Actor
 open Akka.Configuration
 open Akka.FSharp
 open System.Security.Cryptography
 open System.Text
+
 
 let configuration = 
     ConfigurationFactory.ParseString(
@@ -25,17 +23,11 @@ let configuration =
             }
             remote {
                 helios.tcp {
-                    hostname = ""127.0.0.1""
                     port = 9001
+                    hostname = ""127.0.0.1""
                 }
             }
         }")
-
-
-let system = ActorSystem.Create("RemoteFSharp", configuration)
-let mutable count = 0
-let numactor = 8
-let mutable result = null
 
 type WorkerMsg = 
     | Work of int
@@ -43,6 +35,13 @@ type WorkerMsg =
 type MasterMsg = 
     | Assignjob of int
     | Finished
+
+
+let system = ActorSystem.Create("RemoteFSharp", configuration)
+let mutable count = 0
+let numactor = 8
+let mutable result = null
+
 
 let sha256Hash (input : string) =
     use s256 = SHA256.Create()
@@ -57,66 +56,58 @@ let rec leadzeros (h:string) =
     else 
         1 + leadzeros(h.[1..h.Length])
 
-let worker (mailbox:Actor<_>) = 
-    let rec loop () = actor {
+let worker (mailbox:Actor<_>)=
+    let rec loop()=actor{
         let! msg = mailbox.Receive()
-        match msg with
-        | Work(input) -> 
+        match msg with 
+        | Work(input) ->  let r = Random()
+                          let ranStr n = 
+                                let chars = Array.concat([[|' ' .. '~'|]])
+                                let s = Array.length chars in String(Array.init n (fun _ -> chars.[r.Next s])) 
 
-            let r = Random()
-            let ranStr n = 
-                let chars = Array.concat([[|' ' .. '~'|]])
-                let s = Array.length chars in String(Array.init n (fun _ -> chars.[r.Next s])) 
-
-            for _i in 0..numactor..1000000 do 
-                let items = "yuhaoshi" + ranStr(10)
-                let hash = sha256Hash(items)
-                let count = leadzeros(hash) 
-                if count = input then
-                    printfn "%s %s" items hash
-            
-            mailbox.Sender() <! Finished
-            
-        return! loop ()
+                          for _i in 0..numactor..1000000 do 
+                                let items = "yuhaoshi" + ranStr(10)
+                                let hash = sha256Hash(items)
+                                let count = leadzeros(hash) 
+                                if count = input then
+                                      printfn "%s %s" items hash
+                                            
+                                mailbox.Sender() <! Finished
     }
-    loop ()
+    loop()
 
-let master
-    (mailbox:Actor<_>) =
-    let rec loop() = actor {
+let Master (mailbox:Actor<_>) =
+    let rec loop()=actor{
         let! msg = mailbox.Receive()
-        match msg with
-        |Assignjob(a)-> 
-            let creatework = 
-                [for a in 1..numactor do yield (spawn system ("actor" + string(a))) worker]
-                
-            for id in 0..(numactor-1) do
-                creatework.Item(id) <! Work (a)
-            
+        match msg with 
+        | Assignjob(aa) -> let creatework = 
+                                [for a in 1..numactor do yield (spawn system ("actor" + string(a))) worker]
+                           for id in 0..(numactor-1) do
+                                creatework.Item(id) <! Work (aa)
         |Finished -> 
             count <- count + 1
             if count = numactor then
-               result <! "Done!"
-
+               result <! "Done!"                                           
         return! loop()
     }
     loop()
 
-let masteref = spawn system "master" master
+let masteref = spawn system "master" Master
 
 let echoserver =
     spawn system "Echoserver"
     <| fun mailbox ->
         let rec loop() =
             actor {
-                let! message = mailbox.Receive()
-                
-                match message with 
-                | "Works" -> 
-                    masteref <! Assignjob(4)    
+                let! msg = mailbox.Receive()
+                match msg with
+                | "Work" -> 
+                    masteref <! Assignjob(4)
                     result <- mailbox.Sender()
-                return! loop()
+            
+                return! loop() 
             }
         loop()
+
 
 system.WhenTerminated.Wait()

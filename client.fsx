@@ -1,7 +1,6 @@
 #time "on"
 #r "nuget: Akka.FSharp" 
 #r "nuget: Akka.Remote"
-#r "nuget: Akka.TestKit"
 
 open System
 open Akka.Actor
@@ -17,23 +16,20 @@ let configuration =
         @"akka {
             actor {
                 provider = ""Akka.Remote.RemoteActorRefProvider, Akka.Remote""
-                deployment {
-                /remoteecho {
-                    remote = ""akka.tcp://RemoteFSharp@127.0.0.1:9001""
-                }
-                }
+                
             }
             remote {
                 helios.tcp {
-                    hostname = ""127.0.0.1""
                     port = 0
+                    hostname = ""127.0.0.1""
                 }
             }
         }")
 
-let system = ActorSystem.Create("ClientFsharp", configuration)
-let mutable count = 0
+let system = ActorSystem.Create("Client", configuration)
+let mutable count=0
 let numactor = 8
+let mutable local = false
 
 type WorkerMsg = 
     | Work of int
@@ -55,71 +51,63 @@ let rec leadzeros (h:string) =
     else 
         1 + leadzeros(h.[1..h.Length])
 
-let worker (mailbox:Actor<_>) = 
-    let rec loop () = actor {
+let worker (mailbox:Actor<_>)=
+    let rec loop()=actor{
         let! msg = mailbox.Receive()
-        match msg with
-        | Work(input) -> 
+        match msg with 
+        | Work(input) ->  let r = Random()
+                          let ranStr n = 
+                            let chars = Array.concat([[|' ' .. '~'|]])
+                            let s = Array.length chars in String(Array.init n (fun _ -> chars.[r.Next s])) 
 
-            let r = Random()
-            let ranStr n = 
-                let chars = Array.concat([[|' ' .. '~'|]])
-                let s = Array.length chars in String(Array.init n (fun _ -> chars.[r.Next s])) 
+                          for _i in 0..numactor..1000000 do 
+                               let items = "yuhaoshi" + ranStr(10)
+                               let hash = sha256Hash(items)
+                               let count = leadzeros(hash) 
+                               if count = input then
+                                    //printfn "%s %s" items hash         
+                                            
+                          mailbox.Sender() <! Finished
 
-            for _i in 0..numactor..1000000 do 
-                let items = "yuhaoshi" + ranStr(10)
-                let hash = sha256Hash(items)
-                let count = leadzeros(hash) 
-                if count = input then
-                    printfn "%s %s" items hash
-            
-            mailbox.Sender() <! Finished
-            
-        return! loop ()
     }
-    loop ()
+    loop()
 
-let master
-    (mailbox:Actor<_>) =
-    let rec loop() = actor {
+let Master (mailbox:Actor<_>) =
+    let rec loop()=actor{
         let! msg = mailbox.Receive()
-        match msg with
+        match msg with 
         |Assignjob(a)-> 
             let creatework = 
                 [for a in 1..numactor do yield (spawn system ("actor" + string(a))) worker]
                 
             for id in 0..(numactor-1) do
                 creatework.Item(id) <! Work (a)
-            
-        |Finished -> 
+
+        | Finished -> 
             count <- count + 1
             if count = numactor then
-               system.Terminate() |> ignore
-
+                  local <- true
         return! loop()
     }
     loop()
 
-let masteref = spawn system "master" master
-
-let clientserver (mailbox:Actor<_>) = 
-    let rec loop() = 
+let masterRef = spawn system "Master" Master
+let Echoclient (mailbox:Actor<_>)= 
+    let rec loop() =
         actor {
-            let! message = mailbox.Receive()
-            
-            match message with
+            let! msg = mailbox.Receive()
+            match msg with
             | "startwork" ->
-                let echoclient = system.ActorSelection("akka.tcp://RemoteFSharp@" + serverip + ":9001/user/echoserver")
-                echoclient <! "Works"
-                masteref <! Assignjob(4)
+                let echoClient = system.ActorSelection("akka.tcp://RemoteFSharp@" + serverip + ":9001/user/Echoserver")
+                echoClient <! "Work"
+                masterRef <! Assignjob(4)
             | "Done!" ->
                 system.Terminate() |> ignore
-
-            return! loop()
+            return! loop() 
         }
     loop()
+let clientref  = spawn system "Echolient" Echoclient
 
-let clientref = spawn system "client" clientserver
 clientref <! "startwork"
 
 system.WhenTerminated.Wait()

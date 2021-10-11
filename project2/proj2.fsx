@@ -19,8 +19,6 @@ numNodes <- int(arg.[1])                          // numNodes
 let mutable topology = string(arg.[2])            // topology
 let mutable algorithm = string(arg.[3])       // algorithm
 
-let termination = 10    // for gossip
-
 type BossMsg =
     | BossMsg of int
     | GossipTermination of int
@@ -34,14 +32,6 @@ type WorkerMsg =
     | Push of double * double
     | Pushsumnode 
     | Init of int [] * int 
-
-
-let Fulltopo(network: byref<_>, numNodes: int) = 
-    for i = 0 to numNodes-1 do
-        let mutable arr: int [] = Array.empty
-        for j = 0 to numNodes-1 do
-            if i <> j then arr <- Array.append arr [|j|]
-        network <- Array.append network [|arr|]
 
 let worker (mailbox: Actor<_>) =
     let mutable count = 1 
@@ -135,8 +125,10 @@ let main() =
         args <- Console.ReadLine()
         arg0 <- (args.Split ' ').[0]
 
-    let nodeActArr = Array.init numNodes (fun index -> spawn system ("worker" + string index) worker)
-    let mutable network: int [] [] = Array.empty
+    let creatework =  [for a in 0..numNodes-1 do yield (spawn system ("worker" + string a)) worker]
+    //let nodeActArr = (fun index -> spawn system ("worker" + string index) worker)
+    
+    let mutable topo = Array.empty
     
     let stopwatch = System.Diagnostics.Stopwatch.StartNew()
     
@@ -146,11 +138,48 @@ let main() =
     let actorRef = spawn system "SupervisorActor" SupervisorActor 
 
     match topology with
-    | "full" -> Fulltopo(&network, numNodes)
+    | "full" -> 
+        for i in 0..numNodes-1 do
+            let mutable arr = Array.empty
+            for j = 0 to numNodes-1 do
+                if i <> j then 
+                    arr <- Array.append arr [|j|]
+            topo <- Array.append topo [|arr|]
+    | "line" -> 
+        for i in 0..numNodes - 1 do
+            let mutable arr = Array.empty
+            if i = 0 then 
+                arr <- Array.append arr [|i+1|]
+            elif i = numNodes - 1 then 
+                arr <- Array.append arr [|i-1|] 
+            else 
+                arr <- Array.append arr [|i-1; i+1|]
+            topo <- Array.append topo [|arr|]
+            
+    | "3D" ->
+        let sqrtNumNodes1 = int(ceil((float(numNodes) ** (1.0/3.0))))
+        let sqrtNumNodes = sqrtNumNodes1 * sqrtNumNodes1
 
+        printfn "%d %d" sqrtNumNodes1 sqrtNumNodes
+        for i = 0 to numNodes - 1 do
+            let mutable arr: int [] = Array.empty
+            if (i % sqrtNumNodes1) <> 0 then 
+                arr <- Array.append arr [|i-1|]
+            if ((i % sqrtNumNodes1) < sqrtNumNodes1 - 1)  then 
+                arr <- Array.append arr [|i+1|]
+            if (i/sqrtNumNodes) < sqrtNumNodes1 - 1 then
+                arr <- Array.append arr [|i + sqrtNumNodes|]
+            if (i/sqrtNumNodes) <> 0 then
+                arr <- Array.append arr [|i - sqrtNumNodes|]
+            if ((i%sqrtNumNodes)/sqrtNumNodes1)<>0 then
+                arr <- Array.append arr [|i - sqrtNumNodes1|]
+            if ((i%sqrtNumNodes)/sqrtNumNodes1)<sqrtNumNodes1-1 then
+                arr <- Array.append arr [|i + sqrtNumNodes1|]
 
-    for i = 0 to numNodes - 1 do
-        nodeActArr.[i] <! Init (network.[i], i)
+            topo <- Array.append topo [|arr|]
+    printfn "%A" topo
+    for i in 0..(numNodes - 1) do
+        creatework.Item(i) <! Init (topo.[i], i)
 
     match algorithm with
         |"gossip" ->
@@ -161,7 +190,6 @@ let main() =
             
             while true do
                 if (stopwatch.Elapsed.TotalMilliseconds - lastTimestamp) >= float(300) then
-                    printfn("time: %f") stopwatch.Elapsed.TotalMilliseconds
                     lastTimestamp <- stopwatch.Elapsed.TotalMilliseconds
                     actorRef <! Pushs
         |_->

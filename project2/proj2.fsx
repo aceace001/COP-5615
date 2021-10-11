@@ -21,14 +21,16 @@ let mutable algorithm = string(arg.[3])       // algorithm
 
 type BossMsg =
     | BossMsg of int
-    | GossipTermination of int
+    | Gossipstart of int
     | Pushstart of int
     | Pushs
+    | Gossips
     | Pushcomplete of float
+    | Gossipcomplete
     
 type WorkerMsg =
-    | GossipWorkermsg of int
-    | PushSumWorkermsg of int 
+    
+    | Gossip
     | Push of double * double
     | Pushsumnode 
     | Init of int [] * int 
@@ -52,6 +54,14 @@ let worker (mailbox: Actor<_>) =
             if index <> 0 then
                 w <- 0.0
 
+        | Gossip ->
+            if count < 10 then
+                let neighboract = select ("akka://system/user/worker" + string neighborsArr.[Random().Next(neighborsArr.Length)]) system
+                neighboract <! Gossip
+                count <- count + 1
+            if count = 10 then
+                supervisor <! Gossipcomplete
+
         | Push(sum, weight) ->
             s <- double(s + sum)
             w <- double(w + weight)
@@ -67,9 +77,9 @@ let worker (mailbox: Actor<_>) =
 
             rationow <- ratio
 
-            let neighborworker = select ("akka://system/user/worker" + string neighborsArr.[Random().Next(neighborsArr.Length)]) system
+            let neighboract = select ("akka://system/user/worker" + string neighborsArr.[Random().Next(neighborsArr.Length)]) system
 
-            neighborworker <! Push(s/2.0, w/2.0)
+            neighboract <! Push(s/2.0, w/2.0)
             mailbox.Self.Tell(Push(s/2.0, w/2.0))       
 
         return! loop()
@@ -84,8 +94,19 @@ let SupervisorActor (mailbox: Actor<_>) =
     let rec loop() = actor {
         let! message = mailbox.Receive()
         match message with
-
+        |Gossipstart(numN) ->
+            stopwatch.Start()
+            numactor <- numN
+            for i in 0..numactor-1 do
+                let node = select ("akka://system/user/worker" + string i) system
+                node <! Gossip
         
+        | Gossipcomplete ->
+            count <- count + 1
+            if count = numactor then 
+                printfn "Finished gossip. total time:%f" stopwatch.Elapsed.TotalMilliseconds
+                Environment.Exit 1  
+
         |Pushstart(numN) ->
             stopwatch.Start()
             numactor <- numN
@@ -101,10 +122,10 @@ let SupervisorActor (mailbox: Actor<_>) =
 
         |Pushcomplete ratio ->
             count <- count + 1
-            printfn "%.10f" ratio
+            //printfn "%.10f" ratio
 
             if count = numactor then
-                printfn "Finished push-sum. total time:%f" stopwatch.Elapsed.TotalMilliseconds
+                printfn "Finished push_sum. total time:%f" stopwatch.Elapsed.TotalMilliseconds
                 Environment.Exit 1  
         return! loop()
     }
@@ -136,6 +157,7 @@ let main() =
     printfn("time: %f") lastTimestamp
 
     let actorRef = spawn system "SupervisorActor" SupervisorActor 
+    let noderef = spawn system "worker" worker
 
     match topology with
     | "full" -> 
@@ -177,13 +199,21 @@ let main() =
                 arr <- Array.append arr [|i + sqrtNumNodes1|]
 
             topo <- Array.append topo [|arr|]
-    printfn "%A" topo
+
+    //| "imperfect3D" ->
+    //printfn "%A" topo
     for i in 0..(numNodes - 1) do
         creatework.Item(i) <! Init (topo.[i], i)
 
     match algorithm with
         |"gossip" ->
             printfn("gossip is here")
+            actorRef <! Gossipstart(numNodes)
+            
+            while true do
+                if (stopwatch.Elapsed.TotalMilliseconds - lastTimestamp) >= float(300) then
+                    lastTimestamp <- stopwatch.Elapsed.TotalMilliseconds
+                    noderef <! Gossips
         |"push_sum"->
             printfn("push_sum is here")
             actorRef <! Pushstart(numNodes)
@@ -195,7 +225,5 @@ let main() =
         |_->
             
             printfn("ERROR: Algorithm does not exist. Please try that again!")
-    
 
 main()
-

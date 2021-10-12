@@ -31,18 +31,7 @@ type WorkerMsg =
     | GossipWorkermsg of int
     | PushSumWorkermsg of int 
 
-(*
-// Actor framework
-let actorRef = spawn system "myActor" (actorof (fun msg -> (handle message here)() ))
 
-let myActor (mailbox: Actor<_>) =
-    let rec loop() = actor {
-        let! message = mailbox.Receive()
-        
-        return! loop()
-    }
-    loop()
-*)
 (*
 create full network topology
 *)
@@ -130,7 +119,7 @@ let Boss (mailbox: Actor<_>) =
         return! loop()
     }
     loop()
-//let actorRef = spawn system "Boss" Boss
+
 let main() =
 //    printfn("Please input your project name, numNodes, one topology, and one algorithm: (eg. project2 10 full gossip)")
     let mutable checkArgs = true 
@@ -187,46 +176,9 @@ let main() =
     
 main()
 
-
-//System.Console.ReadKey() |> ignore
-//printf "Press any key to exit: "
-
 printfn "Press any key to exit"
 let res = System.Console.ReadKey()
 
 
 
 
-(*
-printfn("Please input your project name, numNodes, one topology, and one algorithm: (eg. project2 10 full gossip)")
-
-let mutable args = Console.ReadLine()
-let mutable num = (args.Split ' ').Length
-printfn("num of args: %A") num
-while (num <> 4) do
-    printfn ("number of arguments are incorrect, please try again!")
-    args <- Console.ReadLine()
-    num <- (args.Split ' ').Length
-
-let arg = args.Split ' '
-let mutable arg0 = string(arg.[0])
-let arg1 = int(arg.[1])
-let arg2 = string(arg.[2])
-let arg3 = string(arg.[3])
-
-while (arg0 <> "project2") do
-    printfn ("You should input 'project2', please try again!")
-    args <- Console.ReadLine()
-    arg0 <- (args.Split ' ').[0]
-
-printfn("success")
-
-*)
-
-// test args
-(*
-printfn("arg0: %s") arg0
-printfn("arg1: %d") arg1
-printfn("arg2: %s") arg2
-printfn("arg3: %s") arg3
-*)

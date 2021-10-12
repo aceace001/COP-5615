@@ -101,7 +101,7 @@ let SupervisorActor (mailbox: Actor<_>) =
         | Gossipcomplete ->
             count <- count + 1
             if count = numactor then 
-                printfn "Finished gossip. total time:%f" stopwatch.Elapsed.TotalMilliseconds
+                printfn "Finished gossip. Total time:%f" stopwatch.Elapsed.TotalMilliseconds
                 Environment.Exit 1  
 
         |Pushstart(numN) ->
@@ -122,7 +122,7 @@ let SupervisorActor (mailbox: Actor<_>) =
             //printfn "%.10f" ratio
 
             if count = numactor then
-                printfn "Finished push_sum. total time:%f" stopwatch.Elapsed.TotalMilliseconds
+                printfn "Finished push_sum. Total time:%f" stopwatch.Elapsed.TotalMilliseconds
                 Environment.Exit 1  
         return! loop()
     }
@@ -150,8 +150,7 @@ let main() =
     
     let stopwatch = System.Diagnostics.Stopwatch.StartNew()
     
-    let mutable lastTimestamp = stopwatch.Elapsed.TotalMilliseconds
-    printfn("time: %f") lastTimestamp
+    let mutable lastTime1 = stopwatch.Elapsed.TotalMilliseconds
 
     let actorRef = spawn system "SupervisorActor" SupervisorActor 
     let noderef = spawn system "worker" worker
@@ -196,9 +195,37 @@ let main() =
                 arr <- Array.append arr [|i + sqrtNumNodes1|]
 
             topo <- Array.append topo [|arr|]
+    | "imperfect3D" ->
+        let sqrtNumNodes1 = int(ceil((float(numNodes) ** (1.0/3.0))))
+        let sqrtNumNodes = sqrtNumNodes1 * sqrtNumNodes1
 
-    //| "imperfect3D" ->
+        printfn "%d %d" sqrtNumNodes1 sqrtNumNodes
+        for i = 0 to numNodes - 1 do
+            let mutable arr: int [] = Array.empty
+            if (i % sqrtNumNodes1) <> 0 then 
+                arr <- Array.append arr [|i-1|]
+            if ((i % sqrtNumNodes1) < sqrtNumNodes1 - 1)  then 
+                arr <- Array.append arr [|i+1|]
+            if (i/sqrtNumNodes) < sqrtNumNodes1 - 1 then
+                arr <- Array.append arr [|i + sqrtNumNodes|]
+            if (i/sqrtNumNodes) <> 0 then
+                arr <- Array.append arr [|i - sqrtNumNodes|]
+            if ((i%sqrtNumNodes)/sqrtNumNodes1)<>0 then
+                arr <- Array.append arr [|i - sqrtNumNodes1|]
+            if ((i%sqrtNumNodes)/sqrtNumNodes1)<sqrtNumNodes1-1 then
+                arr <- Array.append arr [|i + sqrtNumNodes1|]
+
+            let mutable randNeighbor = Random().Next(numNodes)
+            arr <- Array.append arr [|randNeighbor|]
+            topo <- Array.append topo [|arr|]
+    |_->        
+        printfn("ERROR: Topology does not exist. Please try that again!")
+    
     //printfn "%A" topo
+
+    let mutable lastTime = stopwatch.Elapsed.TotalMilliseconds
+    printfn("Topology build time: %f") lastTime
+
     for i in 0..(numNodes - 1) do
         creatework.Item(i) <! Init (topo.[i], i)
 
@@ -208,16 +235,16 @@ let main() =
             actorRef <! Gossipstart(numNodes)
             
             while true do
-                if (stopwatch.Elapsed.TotalMilliseconds - lastTimestamp) >= float(300) then
-                    lastTimestamp <- stopwatch.Elapsed.TotalMilliseconds
+                if (stopwatch.Elapsed.TotalMilliseconds - lastTime1) >= float(300) then
+                    lastTime1 <- stopwatch.Elapsed.TotalMilliseconds
                     noderef <! Gossipstart(numNodes)
         |"push_sum"->
             printfn("push_sum is here")
             actorRef <! Pushstart(numNodes)
             
             while true do
-                if (stopwatch.Elapsed.TotalMilliseconds - lastTimestamp) >= float(300) then
-                    lastTimestamp <- stopwatch.Elapsed.TotalMilliseconds
+                if (stopwatch.Elapsed.TotalMilliseconds - lastTime1) >= float(10) then
+                    lastTime1 <- stopwatch.Elapsed.TotalMilliseconds
                     actorRef <! Pushs
         |_->
             

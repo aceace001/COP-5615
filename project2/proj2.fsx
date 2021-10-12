@@ -20,16 +20,13 @@ let mutable topology = string(arg.[2])            // topology
 let mutable algorithm = string(arg.[3])       // algorithm
 
 type BossMsg =
-    | BossMsg of int
     | Gossipstart of int
     | Pushstart of int
     | Pushs
-    | Gossips
     | Pushcomplete of float
     | Gossipcomplete
     
 type WorkerMsg =
-    
     | Gossip
     | Push of double * double
     | Pushsumnode 
@@ -213,7 +210,7 @@ let main() =
             while true do
                 if (stopwatch.Elapsed.TotalMilliseconds - lastTimestamp) >= float(300) then
                     lastTimestamp <- stopwatch.Elapsed.TotalMilliseconds
-                    noderef <! Gossips
+                    noderef <! Gossipstart(numNodes)
         |"push_sum"->
             printfn("push_sum is here")
             actorRef <! Pushstart(numNodes)
@@ -227,3 +224,4 @@ let main() =
             printfn("ERROR: Algorithm does not exist. Please try that again!")
 
 main()
+

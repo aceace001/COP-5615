@@ -13,10 +13,9 @@ type Message =
 // list of keys in SHA1 form
 // Nodes = [nodens in int form] [42;84..]
 // Keys = [keyk in int form] 
-// NodeMappings = [Node with keys mapped to it.]
 let mutable (keys: int list)= []
 let mutable (nodes: int list) = []  // node42 "DSHGFIOAHDIFOH2138Y9"
-let mutable (mappings: int array array) = [||]
+let mutable (mappings: int list list) = [[]]
 let mutable actorList = []
 let m = 10.0
 let mutable (hopsList:int list) = []
@@ -35,21 +34,6 @@ let sha1 (input : string) =
     |> Seq.map (fun c -> c.ToString("x2"))
     |> Seq.reduce (+)
 
-let rec identify (key:int) (sortedNodes: int list) (index: int) = 
-    if (index >= sortedNodes.Length)
-    then sortedNodes.[0] 
-    elif sortedNodes.[index] >= key
-    then sortedNodes.[index]
-    else identify key sortedNodes (index + 1)
-
-let rec map (key: int) (nodeForKey: int) (index: int)=
-    if (index >= mappings.Length)
-    then mappings <- Array.append mappings [|[|nodeForKey; key|]|]
-         printfn "maps: %A" mappings
-    elif nodeForKey = mappings.[index].[0]
-    then mappings.[index] <- Array.append mappings.[index] [|key|]
-         printfn "maps: %A" mappings
-    else map key nodeForKey (index+1)
     
 // [3 8]
 let checkIfFinished() =
@@ -83,7 +67,7 @@ let fix_fingers (noden:int) (sortedNodes:int list) =
 
 let getNodeFromFingerTable (currentnoden:int) (keyk:int) = 
     let sortedNodes = List.sort nodes
-    //printfn "\nMappings: %A \n nodes: %A \n key: %i" mappings sortedNodes keyk
+    
     let nodeFingerTable = fix_fingers currentnoden sortedNodes
     //printf "\nfinger table %A" nodeFingerTable 
     //printf "\nnoden: %i" currentnoden
@@ -91,8 +75,10 @@ let getNodeFromFingerTable (currentnoden:int) (keyk:int) =
     // psuedocode from paper: "if (id E (n, id)] return successor;"
     let successorIndex = nodeFingerTable.[0] // 1st row of finger table is the successor
     let mutable successorId = currentnoden
+
     if successorIndex < sortedNodes.Length // handle case where finger lookup happened before node was deleted
     then successorId <- sortedNodes.[successorIndex]
+    
     // IF key is between node and successor 
     // 1st edge case: IF key is above the highest noden
     // 2nd edge case: IF key is below the lowest noden
@@ -145,7 +131,7 @@ let chordActor (id: int) (keyList: int list) = spawn system (string id) <| fun m
                         let mutable randomKey = keys.[randomKeyIndex]
                         while (List.contains randomKey integratedKeyList && not (integratedKeyList.Length = keys.Length)) do 
                             // printfn "We already had key %i in our keyList %A" randomKey integratedKeyList
-                            // printfn "Mappings: %A" mappings
+                            
                             let randomKeyIndex2 = random.Next(keys.Length)
                             // printfn "randomKeyIndex2: %i" randomKeyIndex2
                             // printfn "Integrated Key List: %A" integratedKeyList
@@ -185,7 +171,7 @@ let chordActor (id: int) (keyList: int list) = spawn system (string id) <| fun m
                     let mutable keyFound = false
                     //printfn " Key List: %A" keyList
                     //printf " keyBeingSearchedFor %i" keyk
-                    //printfn "Mappings: %A" mappings
+                    
 
                     // REMINDER: KeyList only has keys that the node has so we can just compare our keyHash to every hash in keyList
                     for key in integratedKeyList do // check if current node contains key we are looking for
@@ -215,6 +201,27 @@ let chordActor (id: int) (keyList: int list) = spawn system (string id) <| fun m
     }
     loop()  
 
+
+let rec findSuccessors first res k n =
+    // Add a key 'k'  associated with a successor node 'n' to the list
+    let add k n = 
+      match Map.tryFind n res with
+      | None -> Map.add n [n; k] res
+      | Some l -> Map.add n (l @ [k]) res
+    match k, n with 
+    | [], _ ->  
+      // If there are no more keys, we return the results
+      res |> Map.toList |> List.map snd
+    | k::ks, [] -> 
+      // If there are no more successors, use the special 'first'
+      findSuccessors first (add k first) ks []
+    | k::ks, n::ns when n < k -> 
+      // If we have a key 'k', but the next node is smaller, skip it
+      findSuccessors first res (k::ks) ns
+    | k::ks, n::ns -> 
+      // Found a key 'k' with a successor 'n' - add it to the list
+      findSuccessors first (add k n) ks (n::ns)
+
 let main() = 
     for n in 0..numnodes-1 do
         let r = Random()
@@ -228,16 +235,34 @@ let main() =
         if (not (List.contains keyk keys)) then
             keys <- List.append keys [keyk]
 
-
     let sortedNodes = List.sort nodes
     let sortedKeys = List.sort keys
     printfn "nodes:%A" sortedNodes
     printfn "keys:%A" sortedKeys
-    for key in sortedKeys do 
-        let nodeForKey = identify key sortedNodes 0
-        printfn "nodeforkey: %d" nodeForKey
-        map key nodeForKey 0  
-    
+
+    mappings <-  findSuccessors (List.head sortedNodes) Map.empty sortedKeys sortedNodes
+
+    (*
+    for i in 0..sortedKeys.Length-1 do 
+        for j in 0..sortedNodes.Length-1 do
+            if sortedKeys.[i] <= sortedNodes.[j] && sortedKeys.[i] > sortedNodes.[j-1] then
+                printfn "nodeforkey: %d %d" sortedKeys.[i] sortedNodes.[j]
+                
+                nk <- List.append nk [sortedNodes.[j]]
+    printfn "nk:%A" nk
+    printfn "sk:%d" sortedKeys.Length
+    printfn "mk:%d" nk.Length
+    for i in 0..sortedKeys.Length-1 do
+        for j in nk do
+            if j = mappings.[i].[0] then
+                mappings.[i] <- Array.append mappings.[i] [|sortedKeys.[i]|]
+    printfn "maps:%A" mappings
+                //mappings.[i] <- Array.append mappings.[i] [|sortedKeys.[i]|]
+            //elif sortedKeys.[i] > sortedNodes.[j] then
+            //    printfn "nodeforkey: %d %d" sortedKeys.[i] sortedNodes.[0]
+            //    mappings <- Array.append mappings [|[|sortedNodes.[j]; sortedKeys.[i]|]|]
+    //printfn "maps:%A" mappings
+    *)
     for node in sortedNodes do // For each Node, we will check if it has a mapping in node mapping.
         let mutable keyList = [] // keyList will be a list of keys that are associated with each actor.
         for nodeMappings in mappings do

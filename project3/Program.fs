@@ -3,6 +3,7 @@ open System.Security.Cryptography
 open System.Text;
 open Akka.FSharp
 open Akka.Actor
+open Akka.Routing
 
 let system = System.create "system" (Configuration.defaultConfig())
 
@@ -64,53 +65,55 @@ let fix_fingers (noden:int) (sortedNodes:int list) =
             fingerTable <- List.append fingerTable [closestNodeIndex] 
 
     fingerTable
-
-let getNodeFromFingerTable (currentnoden:int) (keyk:int) = 
-    let sortedNodes = List.sort nodes
+(*
+get key index 
+*)
+let getKeyIdx () =
+//    let mutable integratedKeyList = keyList
+    let random = Random()
+    let randKeyIdx = random.Next(keys.Length)
+    randKeyIdx 
+//    let mutable randKey = keys.[randKeyIdx]
+//    while (List.contains randKey integratedKeyList && integratedKeyList.Length <> keys.Length) do
+(*
+get finger table 
+*)
+let getfingerTable (nodeId: int)  =
+    let sortNodes = List.sort nodes 
+    let fingerTable = fix_fingers nodeId sortNodes
+    fingerTable
+(*
+lookup node using finger table 
+*)
+let lookup (id: int) (fingerTable:int list) (keyId: int) =
+    let successor = fingerTable.[0]   // the next node on the identifier table
+    let mutable successorIdx = id
+    let mutable nextNode = -1
+    let mutable keyIdx = keyId 
+    let sortNodes = List.sort nodes
+    let mutable res = 0
+//    if choice = 0 then
+//        keyIdx <- getKeyIdx()
+    if successorIdx < sortNodes.Length then 
+        successorIdx <- sortNodes.[successor]
+    if (keyIdx <= successorIdx && keyIdx > id) || (successorIdx = 0 && (id < keyIdx || successorIdx >= keyIdx)) then
+        nextNode <- fingerTable.[0]
+//        nextNode <- true 
+//        res <- fingerTable.[0]
+    let m = fingerTable.Length - 1
+    for i = m downto 0 do
+        let nodeId = sortNodes.[fingerTable.[i]]
+        if nodeId < keyIdx && (keyIdx < id || nodeId > id) && nextNode = -1 then
+            nextNode <- fingerTable.[i]
+//            res <- fingerTable.[i]
+    if nextNode = -1 then
+        nextNode <- fingerTable.[m]
+//        res <- fingerTable.[m]
+    nextNode
+//    res
+            
     
-    let nodeFingerTable = fix_fingers currentnoden sortedNodes
-    //printf "\nfinger table %A" nodeFingerTable 
-    //printf "\nnoden: %i" currentnoden
-    let mutable nextNodeIndex = -1
-    // psuedocode from paper: "if (id E (n, id)] return successor;"
-    let successorIndex = nodeFingerTable.[0] // 1st row of finger table is the successor
-    let mutable successorId = currentnoden
-
-    if successorIndex < sortedNodes.Length // handle case where finger lookup happened before node was deleted
-    then successorId <- sortedNodes.[successorIndex]
-    
-    // IF key is between node and successor 
-    // 1st edge case: IF key is above the highest noden
-    // 2nd edge case: IF key is below the lowest noden
-    if (keyk <= successorId  && keyk > currentnoden) || (successorIndex = 0 && (currentnoden < keyk || successorId >= keyk))
-    then
-        //printf "successor picked" 
-        nextNodeIndex <- nodeFingerTable.[0] // successor has key
-    (* psuedocode from paper: 
-        for i = m downto 1
-            if (finger[i] E (n, id)) // finger is "in between" node and id
-            return finger[i];
-            return n; 
-    *)
-    for i = nodeFingerTable.Length-1 downto 0 do
-        let nodeIndex = nodeFingerTable.[i]
-        let noden = sortedNodes.[nodeIndex]
-        // need to calculate if finger is "in between" node and id: 
-        let keyIsBehind = keyk < currentnoden 
-        let fingerIsInFront = noden > currentnoden
-        // if the finger table node is less than key AND it is greater than current node (UNLESS the key is also behind current node)
-        //printf "\n next node: %i key id %i current node: %i bool: %b" noden keyk currentnoden (noden < keyk && (not keyIsInFront || fingerIsInFront) && nextNodeIndex = -1 )
-        if noden < keyk && (fingerIsInFront || keyIsBehind) && nextNodeIndex = -1 // -1 indicates node hasnt been found
-        then 
-            //printf "\n node picked: %i key id %i current node: %i" noden keyk currentnoden
-            nextNodeIndex <- nodeIndex // this node is largest noden in finger table that is less than the key            
-
-    if nextNodeIndex = -1 // if looped through finger table but no node was less than key
-    then 
-        //printf "\n No node matched. next node: %i keyk: %i current node: %i" sortedNodes.[nodeFingerTable.[nodeFingerTable.Length-1]] keyk currentnoden
-        nextNodeIndex <- nodeFingerTable.[nodeFingerTable.Length-1]
-    nextNodeIndex
-
+  
 let chordActor (id: int) (keyList: int list) = spawn system (string id) <| fun mailbox ->
     // printfn "Created actor with id: %s." id 
     // printfn "My keys are: %A" keyList
@@ -121,7 +124,7 @@ let chordActor (id: int) (keyList: int list) = spawn system (string id) <| fun m
         let! msg = mailbox.Receive() 
         match msg with
             | Start(phrase) ->
-                system.Scheduler.Advanced.ScheduleRepeatedly (TimeSpan.FromMilliseconds(0.0), TimeSpan.FromMilliseconds(1000.0), fun () -> 
+                system.Scheduler.Advanced.ScheduleRepeatedly (TimeSpan.FromMilliseconds(0.0), TimeSpan.FromMilliseconds(500.0), fun () -> 
                                        
                         // Don't allow KEYS that Exist
                         // [node1; key1; key2] [node2; key3; key4]
@@ -136,7 +139,15 @@ let chordActor (id: int) (keyList: int list) = spawn system (string id) <| fun m
                             // printfn "randomKeyIndex2: %i" randomKeyIndex2
                             // printfn "Integrated Key List: %A" integratedKeyList
                             randomKey <- keys.[randomKeyIndex2]
-                        let nextNodeIndex = getNodeFromFingerTable id randomKey
+//                        let nextNodeIndex = getNodeFromFingerTable id randomKey
+                        (*
+                        updated starts
+                        *)
+                        let fingerTable = getfingerTable id 
+                        let nextNodeIndex = lookup id fingerTable randomKey 
+                        (*
+                        updated ends
+                        *)
                         //printf "\n req: %d" !sentRequests
                         
                         // printfn "Node %d sending request to Node %d for Key %d " id sortedNodes.[nextNodeIndex] someKey
@@ -144,7 +155,15 @@ let chordActor (id: int) (keyList: int list) = spawn system (string id) <| fun m
                             actorList.[nextNodeIndex] <! Successor(id, randomKey, 0)
                         with 
                             | _ -> 
-                                let nextNodeIndex = getNodeFromFingerTable id randomKey
+//                                let nextNodeIndex = getNodeFromFingerTable id randomKey
+                                (*
+                                updated starts
+                                *)
+                                let fingerTable = getfingerTable id 
+                                let nextNodeIndex = lookup id fingerTable randomKey 
+                                (*
+                                updated ends
+                                *)
                                 actorList.[nextNodeIndex] <! Successor(id, randomKey, 0)
                 ) 
                  
@@ -188,13 +207,33 @@ let chordActor (id: int) (keyList: int list) = spawn system (string id) <| fun m
                         )
                         // send request every second
                     else 
-                        let nextNodeIndex = getNodeFromFingerTable id keyk 
+//                        let nextNodeIndex = getNodeFromFingerTable id keyk
+//                        printfn ("nextNodeIndex before: %A") nextNodeIndex
+//                        let temp = nextNodeIndex
+                        (*
+                        updated starts
+                        *)
+                        let fingerTable = getfingerTable id 
+                        let nextNodeIndex = lookup id fingerTable keyk 
+                                           
+//                        printfn ("nextNode and nextNodeIndex: %A , %A") nextNode nextNodeIndex
+                        (*
+                        updated ends
+                        *)
                         //printfn "Next Node Index: %d" nextNodeIndex
                         try 
                             actorList.[nextNodeIndex] <! Successor(originalID, keyk, newHops)
                         with 
                             | _ -> 
-                                let nextNodeIndex = getNodeFromFingerTable id keyk 
+//                                let nextNodeIndex = getNodeFromFingerTable id keyk
+                                (*
+                                updated starts
+                                *)
+//                                let fingerTable = getfingerTable id 
+//                                let nextNodeIndex = lookup id fingerTable keyk 
+                                (*
+                                updated ends
+                                *)
                                 actorList.[nextNodeIndex] <! Successor(originalID, keyk, newHops)
         // handle an incoming message
         return! loop() // store the new s,w into the next state of the actor

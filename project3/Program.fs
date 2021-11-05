@@ -2,8 +2,7 @@ open System
 open System.Security.Cryptography
 open System.Text;
 open Akka.FSharp
-open Akka.Actor
-open Akka.Routing
+
 
 let system = System.create "system" (Configuration.defaultConfig())
 
@@ -22,11 +21,18 @@ let m = 10.0
 let mutable (hopsList:int list) = []
 let _lock = Object()
 
-printfn("Please input your numNodes, and request: (eg. 1000 10)")
+//printfn("Please input your numNodes, and request: (eg. 1000 10)")
+//let mutable args = Console.ReadLine()
+//let arg = args.Split ' '
+//let mutable numnodes:int = int(arg.[0])
+//let mutable request = int(arg.[1])
+
+printfn("Please input your project name, numNodes, and one numRequests: (eg. project3 100 10)")
 let mutable args = Console.ReadLine()
 let arg = args.Split ' '
-let mutable numnodes:int = int(arg.[0])
-let mutable request = int(arg.[1])    
+let mutable numnodes:int = 0
+numnodes <- int(arg.[1])
+let mutable request = int(arg.[2])  
 
 let sha1 (input : string) =
     use s1 = SHA1.Create()
@@ -50,20 +56,21 @@ let checkIfFinished() =
     
 let fix_fingers (noden:int) (sortedNodes:int list) = 
     let mutable fingerTable = []
-    //let sortedNodes = List.sort nodes // [a list of hashes]
-    let mutable closestNodeIndex = 0 
-    for i in 1..int(m) do
-        if closestNodeIndex < sortedNodes.Length
-        then
-            let finger = int(( float(noden) + (2.0**float(i-1)) ) % (2.0**m)) 
-            if sortedNodes.[closestNodeIndex] < finger
-            then // keep checking nodes until theres a node bigger than current finger, or we reach final node
-                while closestNodeIndex < sortedNodes.Length && sortedNodes.[closestNodeIndex] < finger do
-                    closestNodeIndex <- closestNodeIndex + 1
-                if closestNodeIndex = sortedNodes.Length // if there are no nodes bigger than finger, than map finger to 1st index
-                then closestNodeIndex <- 0
-            fingerTable <- List.append fingerTable [closestNodeIndex] 
-
+    let mutable NodeIdx = 0
+    let mutable index = 0
+    let size = sortedNodes.Length
+   
+    while NodeIdx < size && index < int(m) do
+        let finger = int(float (noden) + (2.0 ** float(index) % (2.0 ** m)))
+        if sortedNodes.[NodeIdx] < finger then
+            while NodeIdx < size && sortedNodes.[NodeIdx] < finger do
+                NodeIdx <- NodeIdx + 1
+            if NodeIdx = size then
+                NodeIdx <- 0
+            fingerTable <- List.append fingerTable [NodeIdx]
+            
+        NodeIdx <- NodeIdx + 1
+        index <- (int)index + 1
     fingerTable
 (*
 get key index 

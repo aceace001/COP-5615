@@ -9,11 +9,11 @@ type Message =
     | Start of string
     | Successor of int * int * int 
 
-let mutable (keys: int list)= []
-let mutable (nodes: int list) = [] 
-let mutable (mappings: int list list) = [[]]
+let mutable keys= []
+let mutable nodes = [] 
+let mutable mappings = [[]]
 let mutable actorList = []
-let mutable (hopsL: int list) = []
+let mutable hopsL = []
 
 let m = 10.0
 let _lock = Object()

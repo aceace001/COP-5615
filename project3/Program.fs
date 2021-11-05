@@ -84,7 +84,7 @@ let chordActor (id: int) (keyList: int list) = spawn system (string id) <| fun m
     let rec loop() = actor {
         let! msg = mailbox.Receive() 
         match msg with
-            | Start(phrase) ->
+            | Start(a) ->
                 system.Scheduler.Advanced.ScheduleRepeatedly (TimeSpan.FromMilliseconds(0.0), TimeSpan.FromMilliseconds(500.0), fun () -> 
                     let random = Random() 
                     let randomKeyIndex = random.Next(keys.Length)
@@ -169,7 +169,7 @@ let main() =
         actorList <- List.append actorList [chordActor node keyList] 
         
     for actor in actorList do
-        actor <! Start("Start")
+        actor <! Start("a")
     
     System.Console.ReadLine() |> ignore
 main()

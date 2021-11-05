@@ -13,8 +13,9 @@ let mutable (keys: int list)= []
 let mutable (nodes: int list) = [] 
 let mutable (mappings: int list list) = [[]]
 let mutable actorList = []
+let mutable (hopsL: int list) = []
+
 let m = 10.0
-let mutable (hopsList:int list) = []
 let _lock = Object()
 
 printfn("Please input your numNodes, and request: (eg. 1000 10)")
@@ -56,7 +57,7 @@ let getfingerTable (nodeId: int)  =
     fingerTable
 
 let lookup (id: int) (fingerTable:int list) (keyId: int) =
-    let successor = fingerTable.[0]   // the next node on the identifier table
+    let successor = fingerTable.[0]   
     let mutable successorIdx = id
     let mutable nextNode = -1
     let mutable keyIdx = keyId 
@@ -79,7 +80,7 @@ let lookup (id: int) (fingerTable:int list) (keyId: int) =
     nextNode
 
 let chordActor (id: int) (keyList: int list) = spawn system (string id) <| fun mailbox ->
-    let mutable integratedKeyList = keyList  
+    let mutable keyL = keyList  
     let rec loop() = actor {
         let! msg = mailbox.Receive() 
         match msg with
@@ -95,29 +96,26 @@ let chordActor (id: int) (keyList: int list) = spawn system (string id) <| fun m
                     actorList.[nextNodeIndex] <! Successor(id, randomKey, 0)
                 )             
             | Successor(originalID, keyk,hops) -> 
-                let keyHash = sha1(keyk |> string) // should we be comparing key hash or the key id? adding this for now
+                let keyHash = sha1(keyk |> string) 
                 let newHops = hops+1 
                 let mutable keyFound = false
 
-                // REMINDER: KeyList only has keys that the node has so we can just compare our keyHash to every hash in keyList
-                for key in integratedKeyList do // check if current node contains key we are looking for
-                    // printfn "Found the Key."
-                    let keyBeingSearchedFor = sha1(key |> string)
-                    if keyBeingSearchedFor = keyHash
+                for key in keyL do 
+
+                    if sha1(key |> string) = keyHash
                     then 
                         keyFound <- true
                 if keyFound
                 then 
                     lock _lock (fun () ->
-                        hopsList <- List.append hopsList [newHops]
-                        if (hopsList.Length >= (numnodes * request))
-                        then 
+                        
+                        hopsL <- List.append hopsL [newHops]
+                        if hopsL.Length >= numnodes * request then 
                             let mutable sum = 0
-                            for num in hopsList do
-                                sum <- sum + num 
-                            
-                            let average = float sum / (float hopsList.Length)
-                            printfn "Total Hops: %d\nAverage hops per requests: %f" hopsList.Length average
+                            for i in 0..hopsL.Length-1 do
+                                sum <- sum + hopsL.[i]
+
+                            printfn "Average hops: %f" (float sum / (float hopsL.Length))
                             Environment.Exit 0
                     )
                 else 

@@ -195,5 +195,3 @@ main <! Starts("start")
 System.Console.ReadLine() |> ignore
 
 0
-
-          

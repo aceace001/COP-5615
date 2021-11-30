@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <RestoreSuccess Condition=" '$(RestoreSuccess)' == '' ">True</RestoreSuccess>
+    <RestoreTool Condition=" '$(RestoreTool)' == '' ">NuGet</RestoreTool>
+    <ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' ">$(MSBuildThisFileDirectory)project.assets.json</ProjectAssetsFile>
+    <NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' ">/Users/ddf/.nuget/packages/</NuGetPackageRoot>
+    <NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' ">/Users/ddf/.nuget/packages/;/usr/local/share/dotnet/sdk/NuGetFallbackFolder</NuGetPackageFolders>
+    <NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' ">PackageReference</NuGetProjectStyle>
+    <NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' ">5.11.0</NuGetToolVersion>
+  </PropertyGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <SourceRoot Include="/Users/ddf/.nuget/packages/" />
+    <SourceRoot Include="/usr/local/share/dotnet/sdk/NuGetFallbackFolder/" />
+  </ItemGroup>
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgMathNet_Numerics Condition=" '$(PkgMathNet_Numerics)' == '' ">/Users/ddf/.nuget/packages/mathnet.numerics/4.12.0</PkgMathNet_Numerics>
+    <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">/Users/ddf/.nuget/packages/fsharp.core/5.0.0</PkgFSharp_Core>
+    <PkgFsPickler Condition=" '$(PkgFsPickler)' == '' ">/Users/ddf/.nuget/packages/fspickler/5.3.2</PkgFsPickler>
+    <PkgAkka Condition=" '$(PkgAkka)' == '' ">/Users/ddf/.nuget/packages/akka/1.4.12</PkgAkka>
+    <PkgAkka_TestKit Condition=" '$(PkgAkka_TestKit)' == '' ">/Users/ddf/.nuget/packages/akka.testkit/1.4.12</PkgAkka_TestKit>
+    <PkgAkka_FSharp Condition=" '$(PkgAkka_FSharp)' == '' ">/Users/ddf/.nuget/packages/akka.fsharp/1.4.12</PkgAkka_FSharp>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,136 @@
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/Project4.exe
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/Project4.deps.json
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/Project4.runtimeconfig.json
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/Project4.runtimeconfig.dev.json
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/Project4.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/Project4.pdb
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/Akka.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/Akka.FSharp.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/Akka.TestKit.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/FSharp.Core.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/FSharp.Quotations.Evaluator.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/FsPickler.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/MathNet.Numerics.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/Microsoft.Win32.SystemEvents.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/System.Collections.Immutable.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/System.Configuration.ConfigurationManager.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/System.Drawing.Common.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/System.Security.Cryptography.ProtectedData.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/System.Security.Permissions.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/System.Windows.Extensions.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/cs/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/de/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/es/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/fr/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/it/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/ja/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/ko/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/pl/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/pt-BR/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/ru/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/tr/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/zh-Hans/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/zh-Hant/FSharp.Core.resources.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/runtimes/unix/lib/netcoreapp3.0/System.Drawing.Common.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+C:/Users/58259/source/repos/Project4/Project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll
+C:/Users/58259/source/repos/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.AssemblyInfoInputs.cache
+C:/Users/58259/source/repos/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.AssemblyInfo.fs
+C:/Users/58259/source/repos/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.fsproj.CopyComplete
+C:/Users/58259/source/repos/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.dll
+C:/Users/58259/source/repos/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.pdb
+C:/Users/58259/source/repos/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.genruntimeconfig.cache
+C:/Users/58259/source/repos/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.fsprojAssemblyReference.cache
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/Project4.deps.json
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/Project4.runtimeconfig.json
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/Project4.runtimeconfig.dev.json
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/Project4.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/Project4.pdb
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/Akka.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/Akka.FSharp.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/Akka.TestKit.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/FSharp.Core.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/FSharp.Quotations.Evaluator.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/FsPickler.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/MathNet.Numerics.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/Microsoft.Win32.SystemEvents.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/System.Collections.Immutable.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/System.Configuration.ConfigurationManager.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/System.Drawing.Common.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/System.Security.Cryptography.ProtectedData.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/System.Security.Permissions.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/System.Windows.Extensions.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/cs/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/de/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/es/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/fr/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/it/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/ja/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/ko/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/pl/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/pt-BR/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/ru/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/tr/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/zh-Hans/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/zh-Hant/FSharp.Core.resources.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/runtimes/unix/lib/netcoreapp3.0/System.Drawing.Common.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.fsproj.AssemblyReference.cache
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.AssemblyInfoInputs.cache
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.AssemblyInfo.fs
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.fsproj.CopyComplete
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.dll
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.pdb
+/Users/ddf/Library/Containers/com.tencent.xinWeChat/Data/Library/Application Support/com.tencent.xinWeChat/2.0b4.0.9/b8b3d8616b7ff59c713aba66ab420b85/Message/MessageTemp/d7d81e78e66089502b535173f7616210/File/新建文件夹 2/project4/Project4/Project4/obj/Debug/netcoreapp3.1/Project4.genruntimeconfig.cache
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/Project4.deps.json
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/Project4.runtimeconfig.json
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/Project4.runtimeconfig.dev.json
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/Project4.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/Project4.pdb
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/Akka.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/Akka.FSharp.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/Akka.TestKit.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/FSharp.Core.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/FSharp.Quotations.Evaluator.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/FsPickler.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/MathNet.Numerics.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/Microsoft.Win32.SystemEvents.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/System.Collections.Immutable.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/System.Configuration.ConfigurationManager.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/System.Drawing.Common.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/System.Security.Cryptography.ProtectedData.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/System.Security.Permissions.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/System.Windows.Extensions.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/cs/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/de/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/es/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/fr/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/it/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/ja/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/ko/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/pl/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/pt-BR/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/ru/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/tr/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/zh-Hans/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/zh-Hant/FSharp.Core.resources.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp3.0/Microsoft.Win32.SystemEvents.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/runtimes/unix/lib/netcoreapp3.0/System.Drawing.Common.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp3.0/System.Drawing.Common.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp3.0/System.Windows.Extensions.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/obj/Debug/netcoreapp3.1/Project4.fsproj.AssemblyReference.cache
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/obj/Debug/netcoreapp3.1/Project4.AssemblyInfoInputs.cache
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/obj/Debug/netcoreapp3.1/Project4.AssemblyInfo.fs
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/obj/Debug/netcoreapp3.1/Project4.fsproj.CopyComplete
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/obj/Debug/netcoreapp3.1/Project4.dll
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/obj/Debug/netcoreapp3.1/Project4.pdb
+/Users/ddf/Downloads/ufl_grdudate_program/Fall 2021/COP5615/project4/project4_part1/project4/obj/Debug/netcoreapp3.1/Project4.genruntimeconfig.cache

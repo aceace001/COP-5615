@@ -1,106 +1,132 @@
-﻿<!DOCTYPE html>
-
+<!DOCTYPE html>
 <meta charset="utf-8" />
-<title>Twitter Interface</title>
+<title>Twitter Simulation</title>
+<style>
+    body {
+        background-color: powderblue;
+        align-items: center;
+        justify-content: center;
+    }
+    h1 {
+        color: red;
+        align-items: center;
+    }
+    button {
+        background-color: deepskyblue;
+        border-radius: 12px;
+    }
+    
+</style>
 
 <div style="margin: 0 auto; width: 720px;">
-    <h3>Please register your accounts</h3>
-    <input TYPE="text" id="register_input"> </input>
-    <input TYPE="text" id="register_pasw_input"> </input>
-    <button id="register">register</button>
-
-    <h3>Please login your accounts</h3>
-    <input TYPE="text" , id="login_input"> </input>
-    <input TYPE="text" , id="login_pasw_input"> </input>
-    <button id="login">login</button>
-
-    <h3>You can subscribe other users here</h3>
-    <input TYPE="text" , id="subscribe_input"> </input>
-    <button id="subscribe">subscribe</button>
-
-    <h3>You can search tweets here</h3>
-    <input TYPE="text" , id="search_input"> </input>
-    <button id="search">search</button>
-
-    <h3>Please input your tweets</h3>
-    <textarea cols=60 rows=6 id="tweet_input"></textarea>
-    <button id="tweet">send</button>
-
-    <button id="refresh">refresh tweets</button>
+    <h1>Twitter Simulation</h1>
+    <h3>Create Your Username:</h3>
+    <input type = "text" placeholder = 'e.g.user1' id = "username_reg"></input>
+    <h3>Create Your Password:</h3>
+    <input type = "text" placeholder = 'e.g.1234' id = "pwd_reg"></input>
+    <br><br>
+    <button class = "register">Sign up</button>
+    
+    <h3>Input Your Username:</h3>
+    <input type = "text" placeholder = 'e.g. test1' id = "username_log"></input>
+    <h3>Input Your Password:</h3>
+    <input type = "text" placeholder = 'e.g. 123' id = "pwd_log"></input>
+    <br><br>
+    <button class = "login">login</button>
+    <br><br>
+    
+    <h3>Subscribe:</h3>
+    <input type = "text" id = "subscribe_input"></input>
+    <br><br>
+    <button class = "subscribe">subscribe</button>
+    <br><br>
+    <h3>Search tweets(inlude tag with '#' or mention you with '@'): </h3>
+    <input type = "text" id = "search_input"></input>
+    <button class = "search">search</button>
+    <br><br>
+    
+    <label>Send Your Tweet:</label>
+    <br><br>
+    <textarea id = "content:" placeholder = "What's happening?" name = "SendTweet" rows = "10" cols = "50"></textarea>
+    <br><br>
+    <button class = "tweet">send</button>
+    <button id = "refresh">update</button>
+    <br><br>
+    <h3>Below is your tweet(s):</h3>
+    <div id="tweetsContent"></div>
+    <h3>Log Out Your Account</h3>
+    <button class = "logout">logout</button>
 
     <script language="javascript" type="text/javascript">
-        var wsUri = "ws://localhost:8080/websocket";
+        const wsUrl = "ws://localhost:8080/websocket";
         var output;
-
-        var register_area = document.querySelector("#register_input")
-        var register_pasw_area = document.getElementById("register_pasw_input")        
+        
         var user_name = "start"
-        var register = document.querySelector("#register")
-        register.addEventListener("click", onRegisterButton)
-
-        var login_area = document.getElementById("login_input")
-        var login_pasw_area = document.getElementById("login_pasw_input")
-        var login = document.querySelector("#login")
-        login.addEventListener("click", onLoginButton)
-
-        var subscribe_area = document.getElementById("subscribe_input")
-        var subscribe = document.querySelector("#subscribe")
-        subscribe.addEventListener("click", onSubcribeButton)
-
-        var search_area = document.getElementById("search_input")
-        var search = document.querySelector("#search")
-        search.addEventListener("click", onSearchButton)
-
-        var refresh = document.getElementById("refresh")
-        refresh.addEventListener("click", onRefreshButton)
-
-        var textarea = document.querySelector("textarea")
-        var tweet = document.querySelector("#tweet")
-        tweet.addEventListener("click", onClickButton)
-
+        
+        document.querySelector('.register')
+            .addEventListener("click", (event) => {
+                event.preventDefault();
+                onRegisterButton();
+        });
+        
+        document.querySelector('.login')
+            .addEventListener("click", (event) => {
+                event.preventDefault();
+                onLoginButton();
+        });
+        
+        document.querySelector('.subscribe')
+            .addEventListener("click", (event) => {
+                event.preventDefault();
+                onSubcribeButton();
+            });
+        
+        document.querySelector('.search')
+            .addEventListener("click", (event) => {
+                event.preventDefault();
+                onSearchButton();
+            });
+        
+        document.getElementById("refresh")
+            .addEventListener("click", (event) => {
+                event.preventDefault();
+                onRefreshButton();
+            });
+        
+        // const textarea = document.querySelector('textarea')
+        
+        document.querySelector('.tweet')
+            .addEventListener("click", (event) => {
+                event.preventDefault();
+                sendTweets();
+            });
+        
         function init() {
-            output = document.getElementById("output");
+            output = document.getElementById("tweetsContent");
             testWebSocket();
         }
 
         function testWebSocket() {
-            websocket = new WebSocket(wsUri);
-            //websocket.onopen = function(evt) { onOpen(evt) };
-            //websocket.onclose = function(evt) { onClose(evt) };
+            websocket = new WebSocket(wsUrl);
             websocket.onmessage = function (evt) { onMessage(evt) };
             websocket.onerror = function (evt) { onError(evt) };
         }
 
-        /*
-        function onOpen(evt) {
-            writeToScreen("CONNECTED");
-        }
-
-        function onClose(evt) {
-            writeToScreen("DISCONNECTED");
-        }
-        */
-
         function onMessage(evt) {
-            var get_json = JSON.parse(evt.data)
+            const get_json = JSON.parse(evt.data)
             if (get_json.messagetype == "register") {
                 alert(get_json.content);
             }
             else if (get_json.messagetype == "login") {
-                if (get_json.name != "NA" && get_json.name != "Error") {
+                console.log("testing   ...")
+                if (get_json.name != "NA") {
+                    console.log("name:",get_json.name)
                     alert(get_json.content);
                     writeToScreen('<span>Hello ' + get_json.name + '</span>');
                 }
                 else {
                     alert(get_json.content);
                 }
-            }
-            else if (get_json.messagetype == "subscribe") {
-                if (get_json.name == "error") {
-                    alert('Subscribe failed: no user found');
-                }
-                else
-                    alert('Subscribed to ' + get_json.name);
             }
             else {
                 writeToScreen('<span onclick=selectPageText(this)>' + get_json.content + '</span>');
@@ -112,116 +138,102 @@
         function onError(evt) {
             writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
         }
-
-        function doSend(message) {
-            //writeToScreen("Sent: " + message);
-            websocket.send(message);
-        }
-
+        
         function selectPageText(selectElement) {
-            document.getElementById("tweet_input").value = " // " + selectElement.innerHTML;  //document.getElementById("My").innerText;
+            document.getElementById("content").value = " // " + selectElement.innerHTML;  //document.getElementById("My").innerText;
         }
 
         function writeToScreen(message) {
-            var pre = document.createElement("p");
+            const pre = document.createElement("p");
             pre.style.wordWrap = "break-word";
             pre.innerHTML = message;
             output.appendChild(pre);
         }
 
-        function onClickButton() {
-            var text = textarea.value;
+        function sendTweets() {
+            const textarea = document.querySelector('textarea')
+            const text = textarea.value;
             //added content
-            var tweet_now = {
+            const tweet_now = {
                 messagetype: "tweet",
                 name: user_name,
                 content: text
-                //date: Date.now()
             }
-            //writeToScreen('<span id="My" onclick=selectPageText(this)>Self-sent: ' + text + '</span>');
-            //<span id="My" onclick=movediv()> pre.innerHTML = text </span>
-            //writeToScreen('<span style="color: blue;" id="TweetFromSub">Content: ' + text + '</span>' + <button id="refresh" onclick="retweet_the_content()">retweet</button>);
-            var jsonTweet = JSON.stringify(tweet_now);
-            doSend(jsonTweet)
+            const jsonTweet = JSON.stringify(tweet_now);
+            websocket.send(jsonTweet);
             textarea.value = "";
             textarea.focus();
         }
         function onLoginButton() {
-            var text = login_area.value;
+            const username_log = document.getElementById('username_log');
+            const pwd_log = document.getElementById('pwd_log');
+            const text = username_log.value;
             user_name = text;
-            var pasw = login_pasw_area.value
-            var tweet_now = {
+            const pasw = pwd_log.value
+            const tweet_now = {
                 messagetype: "login",
                 name: user_name,
                 content: pasw
             }
-            var jsonTweet = JSON.stringify(tweet_now);
-            //alert("User: " + text + " logged successfully")
-            //writeToScreen("User: " + text + " logged successfully");
-            doSend(jsonTweet);
-            //login_area.value="";
-            //login_area.focus();
+            const jsonTweet = JSON.stringify(tweet_now);
+            websocket.send(jsonTweet);
         }
         function onSubcribeButton() {
-            var text = subscribe_area.value;
-            user_name = text;
-            var tweet_now = {
+            const subscribe_area = document.getElementById("subscribe_input");
+            const text = subscribe_area.value;
+            const tweet_now = {
                 messagetype: "subscribe",
                 name: user_name,
                 content: text
             }
-            var jsonTweet = JSON.stringify(tweet_now);
+            const jsonTweet = JSON.stringify(tweet_now);
             //writeToScreen("Subscribe user: " + text + " successfully");
-            //alert("Subscribed to user: " + text)
-            doSend(jsonTweet);
+            alert("Subscribe user: " + text + " successfully")
+            websocket.send(jsonTweet);
             //s.value="";
             //login_area.focus();
         }
 
         function onRegisterButton() {
-            var text = register_area.value;
+            const username_reg = document.querySelector('#username_reg');
+            const pwd_reg = document.getElementById('pwd_reg');
+            const text = username_reg.value;
             user_name = text;
-            var pasw = register_pasw_area.value
-            var tweet_now = {
+            const pasw = pwd_reg.value;
+            
+            const tweet_now = {
                 messagetype: "register",
                 name: user_name,
                 content: pasw
             }
-            var jsonTweet = JSON.stringify(tweet_now);
-            //writeToScreen("User: " + text + " registered successfully");
-            //alert("User: " + text + " registered successfully")
-            doSend(jsonTweet)
+            const jsonTweet = JSON.stringify(tweet_now);
+            websocket.send(jsonTweet);
         }
 
         function onSearchButton() {
-            var text = search_area.value;
-            var tweet_now = {
+            const search_area = document.getElementById("search_input")
+            const text = search_area.value;
+            const tweet_now = {
                 messagetype: "search",
                 name: user_name,
                 content: text
             }
-            var jsonTweet = JSON.stringify(tweet_now);
-            doSend(jsonTweet);
-            //s.value="";
-            //login_area.focus();
+            const jsonTweet = JSON.stringify(tweet_now);
+            websocket.send(jsonTweet);
         }
 
         function onRefreshButton() {
-            var tweet_now = {
+            const tweet_now = {
                 messagetype: "refresh",
                 name: user_name,
                 content: "NA"
             }
-            var jsonTweet = JSON.stringify(tweet_now);
-            doSend(jsonTweet)
+            const jsonTweet = JSON.stringify(tweet_now);
+            websocket.send(jsonTweet);
         }
 
         window.addEventListener("load", init, false);
 
     </script>
-
-    <h3>Real-time Tweets</h3>
-
-    <div id="output"></div>
 
 </div>

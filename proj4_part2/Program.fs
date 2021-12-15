@@ -19,11 +19,11 @@ open System.Collections.Generic
 
 
 let userDB = new Dictionary<string, string>()
-let tweetDB = new Dictionary<string, (string * list<string>) >()
-let relationDB = new Dictionary<string, list<string>>()
+let tDB = new Dictionary<string, (string * list<string>) >()
+let rDB = new Dictionary<string, list<string>>()
 
-type tweet_now = 
-    { messagetype: string
+type tweettypes = 
+    { msgtp: string
       name : string
       content : string }
     
@@ -35,15 +35,25 @@ let ws (webSocket : WebSocket) (context: HttpContext)=
             match msg with
             | (Text, data, true) ->
                 let str = UTF8.toString data
-                let tweet_msg = Json.deserialize<tweet_now> str
-                let mType=tweet_msg.messagetype
+                let tweet_msg = Json.deserialize<tweettypes> str
+                let mType=tweet_msg.msgtp
                 
                 if mType="tweet" then
-                    let temp=snd (tweetDB.Item(tweet_msg.name))
-                    let temp=temp @ [tweet_msg.content]
-                    tweetDB.Item(tweet_msg.name) <- ("Active", temp)
-                    let response:tweet_now = {
-                        messagetype= "tweet"
+                    let temp= snd (tDB.Item(tweet_msg.name)) @ [tweet_msg.content]
+                    tDB.Item(tweet_msg.name) <- ("Active", temp)
+                    let response1:tweettypes = {
+                        msgtp= "tweet"
+                        name = tweet_msg.name
+                        content = "Your tweet is:"
+                    }
+                    let json1 = Json.serialize response1
+                    let byteResponse1 =
+                      json1
+                      |> System.Text.Encoding.ASCII.GetBytes
+                      |> ByteSegment
+                    do! webSocket.send Text byteResponse1 true
+                    let response:tweettypes = {
+                        msgtp= "tweet"
                         name = tweet_msg.name
                         content = tweet_msg.name + " : " + tweet_msg.content
                     }
@@ -56,10 +66,10 @@ let ws (webSocket : WebSocket) (context: HttpContext)=
                                                                                                               
                     printfn "uploaded into the database from user %s" tweet_msg.name
                 elif mType="register" then
-                    if tweetDB.ContainsKey tweet_msg.name then
+                    if tDB.ContainsKey tweet_msg.name then
                         printfn "user register failed: duplicated name"
-                        let response:tweet_now = {
-                            messagetype = "register";
+                        let response:tweettypes = {
+                            msgtp = "register";
                             name = tweet_msg.name;
                             content = "user already registered, please try a different name"
                         }
@@ -70,13 +80,13 @@ let ws (webSocket : WebSocket) (context: HttpContext)=
                           |> ByteSegment
                         do! webSocket.send Text byteResponse true
                     else
-                        tweetDB.Add(tweet_msg.name, ("Inactive",[]))
+                        tDB.Add(tweet_msg.name, ("Inactive",[]))
                         printfn "user %s registered" tweet_msg.name
-                        relationDB.Add(tweet_msg.name, [])
+                        rDB.Add(tweet_msg.name, [])
                         userDB.Add(tweet_msg.name, tweet_msg.content)
 
-                        let response:tweet_now = {
-                            messagetype = "register";
+                        let response:tweettypes = {
+                            msgtp = "register";
                             name = tweet_msg.name;
                             content = "user " + tweet_msg.name + " registered"
                         }
@@ -88,10 +98,10 @@ let ws (webSocket : WebSocket) (context: HttpContext)=
                         do! webSocket.send Text byteResponse true
 
                 elif mType="login" then
-                    if tweetDB.ContainsKey tweet_msg.name then
+                    if tDB.ContainsKey tweet_msg.name then
                         if tweet_msg.content = userDB.[tweet_msg.name] then
-                            let response:tweet_now = {
-                                messagetype = "register";
+                            let response:tweettypes = {
+                                msgtp = "login";
                                 name = tweet_msg.name;
                                 content = "user " + tweet_msg.name + " logged in"
                             }
@@ -102,42 +112,13 @@ let ws (webSocket : WebSocket) (context: HttpContext)=
                               |> ByteSegment
                             do! webSocket.send Text byteResponse true
 
-                            let temp=snd (tweetDB.Item(tweet_msg.name))
-                            tweetDB.Item(tweet_msg.name) <- ("Active", temp)
+                            let temp=snd (tDB.Item(tweet_msg.name))
+                            tDB.Item(tweet_msg.name) <- ("Active", temp)
                             printfn "user %s login successfully" tweet_msg.name
-                            if relationDB.[tweet_msg.name] <> [] then 
-                                let watch_list = relationDB.[tweet_msg.name]        
-                                for wtc in watch_list do
-                                    for each1 in snd (tweetDB.[wtc]) do
-                                        let response:tweet_now= {
-                                            messagetype= "tweet"
-                                            name = tweet_msg.name
-                                            content = wtc + " : " + each1
-                                        }
-                                        let json = Json.serialize response
-                                        let byteResponse =
-                                            json
-                                            |> System.Text.Encoding.ASCII.GetBytes
-                                            |> ByteSegment
-                                        do! webSocket.send Text byteResponse true
-                                        printfn"%s: %s" wtc each1
-                            for each2 in (snd (tweetDB.[tweet_msg.name])) do
-                                let response:tweet_now = {
-                                    messagetype= "tweet"
-                                    name = tweet_msg.name
-                                    content = tweet_msg.name + " : " + each2
-                                }
-                                let json = Json.serialize response
-                                let byteResponse =
-                                    json
-                                    |> System.Text.Encoding.ASCII.GetBytes
-                                    |> ByteSegment
-                                do! webSocket.send Text byteResponse true
-                                printfn"%s: %s" tweet_msg.name each2
                         else
                             printfn "login failed: incorrect username or password"
-                            let response: tweet_now = {
-                                messagetype= "login"
+                            let response: tweettypes = {
+                                msgtp= "login"
                                 name = "NA"
                                 content = "incorrect username or password"
                             }
@@ -149,8 +130,8 @@ let ws (webSocket : WebSocket) (context: HttpContext)=
                             do! webSocket.send Text byteResponse true
                     else
                         printfn "login failed: no user found"
-                        let response:tweet_now = {
-                            messagetype = "login";
+                        let response:tweettypes = {
+                            msgtp = "login";
                             name = "Error";
                             content = "user does not exist, try again"
                         }
@@ -161,26 +142,15 @@ let ws (webSocket : WebSocket) (context: HttpContext)=
                           |> ByteSegment
                         do! webSocket.send Text byteResponse true
                 elif mType= "subscribe" then
-                    if tweetDB.ContainsKey tweet_msg.name then
-                        let temp=relationDB.Item(tweet_msg.name)
-                        let temp=temp @ [tweet_msg.content]
-                        relationDB.Item(tweet_msg.name) <- temp
+                    if tDB.ContainsKey tweet_msg.name then 
+                        let temp= rDB.Item(tweet_msg.name) @ [tweet_msg.content]
+                        rDB.Item(tweet_msg.name) <- temp
                         printfn "user %s subscribed" tweet_msg.content
-                        let response:tweet_now = {
-                            messagetype = "subscribe";
-                            name = tweet_msg.name;
-                            content = "subsribed to " + tweet_msg.name
-                        }
-                        let json = Json.serialize response
-                        let byteResponse =
-                          json
-                          |> System.Text.Encoding.ASCII.GetBytes
-                          |> ByteSegment
-                        do! webSocket.send Text byteResponse true
+
                     else 
-                        printfn "subsribe failed: no user name found"
-                        let response:tweet_now = {
-                            messagetype = "subscribe";
+                        printfn "subscribe failed: no user name found"
+                        let response:tweettypes = {
+                            msgtp = "subscribe";
                             name = "error";
                             content = "subsribe failed: no user " + tweet_msg.name + " found"
                         }
@@ -190,13 +160,97 @@ let ws (webSocket : WebSocket) (context: HttpContext)=
                           |> System.Text.Encoding.ASCII.GetBytes
                           |> ByteSegment
                         do! webSocket.send Text byteResponse true
-                elif mType= "search" then
+                elif mType= "retweet" then
+                    printfn "user %s retweet" tweet_msg.name
                     
-                    for name in tweetDB.Keys do
-                        for each in (snd (tweetDB.Item(name)) ) do
+                    let response1:tweettypes = {
+                        msgtp= "retweet"
+                        name = tweet_msg.name
+                        content = "Retweet from user " + tweet_msg.name
+                    }
+                    let json1 = Json.serialize response1
+                    let byteResponse1 =
+                        json1
+                        |> System.Text.Encoding.ASCII.GetBytes
+                        |> ByteSegment
+                    do! webSocket.send Text byteResponse1 true
+
+                    for i in snd (tDB.[tweet_msg.name]) do
+                        let response:tweettypes= {
+                            msgtp = "retweet"
+                            name = tweet_msg.name
+                            content = i 
+                        }
+                        let json = Json.serialize response
+                        let byteResponse =
+                            json
+                            |> System.Text.Encoding.ASCII.GetBytes
+                            |> ByteSegment
+                        do! webSocket.send Text byteResponse true
+                        printfn"%s" i
+                elif mType= "display" then
+                    printfn "user %s displayed subscriptions and tweets" tweet_msg.name
+                    
+                    let response1:tweettypes = {
+                        msgtp= "display"
+                        name = tweet_msg.name
+                        content = "Your subscriptions with their tweets and yours are:"
+                    }
+                    let json1 = Json.serialize response1
+                    let byteResponse1 =
+                        json1
+                        |> System.Text.Encoding.ASCII.GetBytes
+                        |> ByteSegment
+                    do! webSocket.send Text byteResponse1 true
+
+                    if rDB.[tweet_msg.name] <> [] then 
+                        let sbs = rDB.[tweet_msg.name]        
+                        for i in sbs do
+                            for j in snd (tDB.[i]) do
+                                let response:tweettypes= {
+                                    msgtp = "display"
+                                    name = tweet_msg.name
+                                    content = i + " : " + j 
+                                }
+                                let json = Json.serialize response
+                                let byteResponse =
+                                    json
+                                    |> System.Text.Encoding.ASCII.GetBytes
+                                    |> ByteSegment
+                                do! webSocket.send Text byteResponse true
+                                printfn"%s: %s" i j
+                    for k in (snd (tDB.[tweet_msg.name])) do
+                        let response:tweettypes = {
+                            msgtp= "display"
+                            name = tweet_msg.name
+                            content = tweet_msg.name + " : " + k
+                        }
+                        let json = Json.serialize response
+                        let byteResponse =
+                            json
+                            |> System.Text.Encoding.ASCII.GetBytes
+                            |> ByteSegment
+                        do! webSocket.send Text byteResponse true
+                        printfn"%s: %s" tweet_msg.name k
+                    
+                elif mType= "search" then
+                    let response1:tweettypes= {
+                        msgtp= "search"
+                        name = tweet_msg.name
+                        content = "Your Search Results:"
+                    }
+                    let json1 = Json.serialize response1
+                    let byteResponse1 =
+                      json1
+                      |> System.Text.Encoding.ASCII.GetBytes
+                      |> ByteSegment
+                    do! webSocket.send Text byteResponse1 true
+
+                    for name in tDB.Keys do
+                        for each in (snd (tDB.Item(name)) ) do
                             if (each.Contains tweet_msg.content) then 
-                                let response:tweet_now= {
-                                    messagetype= "search"
+                                let response:tweettypes= {
+                                    msgtp= "search"
                                     name = tweet_msg.name
                                     content = name + " : " + each
                                 }
